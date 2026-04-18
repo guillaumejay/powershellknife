@@ -14,10 +14,10 @@
 
 ## 3. Cmdlet inventory
 
-- [ ] 3.1 Embarquer une liste core (~200 cmdlets Microsoft.PowerShell.*) en JSON compilé
-- [ ] 3.2 Module `inventory.rs` : lancer `pwsh -NoProfile -Command "..."` pour récolter `Get-Command`
-- [ ] 3.3 Sérialiser le cache dans `~/.powershellknife/cmdlet_inventory.json` avec timestamp
-- [ ] 3.4 Détection "cache > 30j" et proposition de refresh
+- [x] 3.1 Embarquer une liste core (~200 cmdlets Microsoft.PowerShell.*) en JSON compilé
+- [x] 3.2 Module `inventory.rs` : lancer `pwsh -NoProfile -Command "..."` pour récolter `Get-Command`
+- [x] 3.3 Sérialiser le cache dans `~/.powershellknife/cmdlet_inventory.json` avec timestamp
+- [x] 3.4 Détection "cache > 30j" et proposition de refresh
 
 ## 4. History cleaner — backend
 
