@@ -21,12 +21,12 @@
 
 ## 4. History cleaner — backend
 
-- [ ] 4.1 Parser de `ConsoleHost_history.txt` (ligne simple + support des continuations backtick)
-- [ ] 4.2 Détection de doublons : groupement par commande trimmée, conservation de l'ordre
-- [ ] 4.3 Détection de typos : extraction du premier token, lookup inventaire, Levenshtein ≤ 2 avec seuil d'écart
-- [ ] 4.4 Denylist d'exécutables externes (git, docker, npm, node, python, cargo, go, ...)
-- [ ] 4.5 Modèle de plan d'édition (liste d'actions : delete, replace, keep) + serialization pour preview
-- [ ] 4.6 Tests unitaires sur fixtures d'historique (doublons, typos, cas limites)
+- [x] 4.1 Parser de `ConsoleHost_history.txt` (ligne simple + support des continuations backtick)
+- [x] 4.2 Détection de doublons : groupement par commande trimmée, conservation de l'ordre
+- [x] 4.3 Détection de typos : extraction du premier token, lookup inventaire, Levenshtein ≤ 2 avec seuil d'écart
+- [x] 4.4 Denylist d'exécutables externes (git, docker, npm, node, python, cargo, go, ...)
+- [x] 4.5 Modèle de plan d'édition (liste d'actions : delete, replace, keep) + serialization pour preview
+- [x] 4.6 Tests unitaires sur fixtures d'historique (doublons, typos, cas limites)
 
 ## 5. History cleaner — UI
 
