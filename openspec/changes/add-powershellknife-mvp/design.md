@@ -134,3 +134,95 @@ powershellknife/
 | Inventaire pas à jour (nouveau module installé) | typo non détectée ou faux positif | action "Refresh inventory" accessible dans la TUI, proposition auto si > 30j |
 | ratatui breaking changes entre versions | maintenance | pin strict + vérifier la compat à chaque bump |
 | Parser custom du profil incapable de gérer des blocs managés partiellement corrompus | write refusé | en cas d'ambiguïté (marqueurs en double, mal imbriqués), refuser d'écrire et proposer à l'utilisateur d'ouvrir le fichier manuellement |
+
+## Appendix: UI mockups
+
+Cibles visuelles pour les écrans ratatui. Ce sont des directions, pas des contraintes pixel-exactes : l'implémentation doit viser cette information hiérarchie et cette ergonomie clavier, mais les détails (bordures, séparateurs, couleurs) peuvent évoluer selon les capacités de ratatui et le ressenti.
+
+### Écran History cleaner
+
+```
+┌─ powershellknife ─ History ────────────────────────────────┐
+│ File: ConsoleHost_history.txt  (PS 7, CurrentUser)         │
+│ 2847 lines │ 12 duplicate groups │ 8 suspected typos       │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ⚠ L.142   Get-Procss -Name chrome                          │
+│            └─► suggestion: Get-Process  (1 edit)            │
+│            [D]elete  [R]eplace  [K]eep  [→]                 │
+│                                                             │
+│  ⟳ L.201   ls                                               │
+│            └─► aussi aux lignes 134, 167, 189, 225 (x4)     │
+│            [C]ollapse (garder la + récente)  [K]eep  [→]    │
+│                                                             │
+│  ⚠ L.318   docer ps                                         │
+│            └─► aucune suggestion assez proche               │
+│            [D]elete  [K]eep  [→]                            │
+│                                                             │
+├────────────────────────────────────────────────────────────┤
+│ [A]uto-fix tout   [P]review diff   F2:Apply   F10:Quit     │
+└────────────────────────────────────────────────────────────┘
+```
+
+Notes :
+- Icônes (⚠ pour typo, ⟳ pour doublon) optionnelles si unicode pose problème dans certains terminaux — fallback texte `[typo]`, `[dup]` acceptable.
+- Les actions par entrée sont des raccourcis clavier, pas des boutons cliquables.
+- Auto-fix = appliquer `Action::Replace` sur tous les `TypoFlag` à suggestion `Some(_)`.
+- Preview ouvre un panneau/modal avec la sortie de `EditPlan::preview()`.
+
+### Écran Profile editor
+
+```
+┌─ powershellknife ─ Profile ────────────────────────────────┐
+│ Cible: CurrentUser / CurrentHost / PS 7          [Change]  │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│  PSReadLine                                                 │
+│  ─────────                                                  │
+│  [x] HistoryNoDuplicates                                    │
+│  [ ] HistorySearchCursorMovesToEnd                          │
+│  PredictionSource    ‹ History ›    (None/History/Plugin)  │
+│  EditMode            ‹ Windows ›    (Windows/Emacs/Vi)     │
+│  BellStyle           ‹ Visual  ›                            │
+│                                                             │
+│  Modules auto-importés                                      │
+│  ──────────                                                 │
+│  [x] posh-git                              [Remove]         │
+│  [x] Terminal-Icons                        [Remove]         │
+│  [+] Add module...                                          │
+│                                                             │
+│  Aliases persistants                                        │
+│  ──────────                                                 │
+│  ll  →  Get-ChildItem -Force               [Edit][Remove]   │
+│  [+] Add alias...                                           │
+│                                                             │
+│  Code custom du profil  (preserved, non édité) ───────── [>]│
+│                                                             │
+├────────────────────────────────────────────────────────────┤
+│ F2: Apply (avec backup)   F5: Reload   F10: Quit           │
+└────────────────────────────────────────────────────────────┘
+```
+
+Notes :
+- Les cases à cocher représentent les bools PSReadLine ; les `‹ … ›` représentent des sélecteurs enum (← → pour naviguer).
+- La section "Code custom du profil" est repliée par défaut — indicateur `[>]` devient `[v]` quand dépliée, contenu affiché en lecture seule (couleur grisée).
+- `[Change]` ouvre un dialogue pour changer de cible (post-MVP, désactivé par défaut vu le scope).
+- `Add module…` et `Add alias…` ouvrent un prompt modal avec validation basique (nom non vide).
+
+### Layout global (tabs)
+
+```
+┌─ powershellknife ──────────────────────────────────────────┐
+│ [ History ] [ Profile ] [ About ]              dirty: yes  │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│   ... contenu de l'onglet actif ...                         │
+│                                                             │
+├────────────────────────────────────────────────────────────┤
+│ Tab: switch   F2: Apply   F5: Reload   F10: Quit           │
+└────────────────────────────────────────────────────────────┘
+```
+
+- Un flag `dirty` (jamais vide) sur la barre haute indique si des modifications non appliquées existent dans l'onglet courant.
+- Quitter avec `dirty: yes` déclenche un prompt de confirmation.
+- `About` est un écran simple (version, build info, chemins cibles résolus, état du cache inventory).
