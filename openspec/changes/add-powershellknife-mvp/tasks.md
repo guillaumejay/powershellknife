@@ -30,45 +30,45 @@
 
 ## 5. History cleaner — UI
 
-- [ ] 5.1 Écran ratatui : en-tête de stats, liste des entrées signalées, panneau de détail
-- [ ] 5.2 Navigation clavier (j/k ou flèches, tabs pour filtrer doublons/typos)
-- [ ] 5.3 Actions par entrée : Delete, Replace, Keep, Collapse (pour les groupes)
-- [ ] 5.4 Actions bulk : Auto-fix tous les typos à haute confiance, Collapse tous les doublons
-- [ ] 5.5 Preview diff avant apply (F5 ou `p`)
-- [ ] 5.6 Apply → backup + écriture atomique + toast de confirmation
+- [x] 5.1 Écran ratatui : en-tête de stats, liste des entrées signalées, panneau de détail
+- [x] 5.2 Navigation clavier (j/k ou flèches, tabs pour filtrer doublons/typos)
+- [x] 5.3 Actions par entrée : Delete, Replace, Keep, Collapse (pour les groupes)
+- [x] 5.4 Actions bulk : Auto-fix tous les typos à haute confiance, Collapse tous les doublons
+- [x] 5.5 Preview diff avant apply (F5 ou `p`)
+- [x] 5.6 Apply → backup + écriture atomique + toast de confirmation
 
 ## 6. Profile editor — backend
 
-- [ ] 6.1 Module `profile/block.rs` : détection/lecture/écriture du bloc managé (`# >>> ... # <<<`)
-- [ ] 6.2 Gestion de l'absence de bloc (création en fin de fichier au 1er save)
-- [ ] 6.3 Refus d'écriture si bloc corrompu (marqueurs en double, mal imbriqués) avec message clair
-- [ ] 6.4 Modèle `settings.rs` des réglages exposés :
+- [x] 6.1 Module `profile/block.rs` : détection/lecture/écriture du bloc managé (`# >>> ... # <<<`)
+- [x] 6.2 Gestion de l'absence de bloc (création en fin de fichier au 1er save)
+- [x] 6.3 Refus d'écriture si bloc corrompu (marqueurs en double, mal imbriqués) avec message clair
+- [x] 6.4 Modèle `settings.rs` des réglages exposés :
   - PSReadLine : HistoryNoDuplicates, HistorySearchCursorMovesToEnd, PredictionSource, EditMode, BellStyle
   - Modules auto-importés (liste)
   - Alias persistants (map name → value)
-- [ ] 6.5 Parsing des lignes du bloc vers le modèle (`Set-PSReadLineOption`, `Import-Module`, `Set-Alias`)
-- [ ] 6.6 Sérialisation du modèle vers les lignes du bloc (stable, ordre déterministe)
-- [ ] 6.7 Tests unitaires sur round-trip parse/serialize et sur préservation du code hors bloc
+- [x] 6.5 Parsing des lignes du bloc vers le modèle (`Set-PSReadLineOption`, `Import-Module`, `Set-Alias`)
+- [x] 6.6 Sérialisation du modèle vers les lignes du bloc (stable, ordre déterministe)
+- [x] 6.7 Tests unitaires sur round-trip parse/serialize et sur préservation du code hors bloc
 
 ## 7. Profile editor — UI
 
-- [ ] 7.1 Écran ratatui : sections (PSReadLine, Modules, Aliases), chacune éditable
-- [ ] 7.2 Widgets : checkbox pour bool, dropdown (liste déroulante avec ← →) pour enum
-- [ ] 7.3 Ajout/suppression de module (prompt + validation basique du nom)
-- [ ] 7.4 Ajout/édition/suppression d'alias (prompt nom + valeur)
-- [ ] 7.5 Section "Code custom du profil" en lecture seule, repliée par défaut
-- [ ] 7.6 Apply → backup + écriture atomique + toast de confirmation
+- [x] 7.1 Écran ratatui : sections (PSReadLine, Modules, Aliases), chacune éditable
+- [x] 7.2 Widgets : checkbox pour bool, dropdown (liste déroulante avec ← →) pour enum
+- [x] 7.3 Ajout/suppression de module (prompt + validation basique du nom)
+- [x] 7.4 Ajout/édition/suppression d'alias (prompt nom + valeur)
+- [x] 7.5 Section "Code custom du profil" en lecture seule, repliée par défaut
+- [x] 7.6 Apply → backup + écriture atomique + toast de confirmation
 
 ## 8. Intégration TUI globale
 
-- [ ] 8.1 Layout principal avec barre d'onglets (History / Profile / About)
-- [ ] 8.2 Barre de statut permanente (raccourcis, chemin cible, état dirty/clean)
-- [ ] 8.3 Gestion propre de la sortie (F10 / Ctrl-C, prompt si dirty)
-- [ ] 8.4 Gestion des erreurs runtime (afficher dans un toast/panneau, jamais de panic visible à l'utilisateur)
+- [x] 8.1 Layout principal avec barre d'onglets (History / Profile / About)
+- [x] 8.2 Barre de statut permanente (raccourcis, chemin cible, état dirty/clean)
+- [x] 8.3 Gestion propre de la sortie (F10 / Ctrl-C, prompt si dirty)
+- [x] 8.4 Gestion des erreurs runtime (afficher dans un toast/panneau, jamais de panic visible à l'utilisateur)
 
 ## 9. Polish & release
 
-- [ ] 9.1 README.md : installation, captures d'écran, commandes de base
-- [ ] 9.2 Tests d'intégration end-to-end sur environnement temporaire (tempdir avec fichiers fixtures)
+- [x] 9.1 README.md : installation, captures d'écran, commandes de base
+- [x] 9.2 Tests d'intégration end-to-end sur environnement temporaire (tempdir avec fichiers fixtures)
 - [ ] 9.3 Tag v0.1.0 + GitHub Release avec binaire `psknife.exe`
 - [ ] 9.4 Collecter un retour d'utilisation réel avant d'élargir le scope (PS 5.1, autres profils, etc.)
