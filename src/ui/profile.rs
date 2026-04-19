@@ -223,15 +223,13 @@ impl ProfileScreen {
 
     fn handle_psreadline_key(&mut self, key: KeyEvent) {
         match key.code {
-            KeyCode::Up | KeyCode::Char('k') => {
-                if self.psreadline_row > 0 {
-                    self.psreadline_row -= 1;
-                }
+            KeyCode::Up | KeyCode::Char('k') if self.psreadline_row > 0 => {
+                self.psreadline_row -= 1;
             }
-            KeyCode::Down | KeyCode::Char('j') => {
-                if self.psreadline_row + 1 < PSREADLINE_ROW_COUNT {
-                    self.psreadline_row += 1;
-                }
+            KeyCode::Down | KeyCode::Char('j')
+                if self.psreadline_row + 1 < PSREADLINE_ROW_COUNT =>
+            {
+                self.psreadline_row += 1;
             }
             KeyCode::Char(' ') | KeyCode::Enter => self.toggle_or_cycle(1),
             KeyCode::Left => self.toggle_or_cycle(-1),
@@ -284,33 +282,27 @@ impl ProfileScreen {
     fn handle_modules_key(&mut self, key: KeyEvent) {
         let total = self.settings.modules.len() + 1;
         match key.code {
-            KeyCode::Up | KeyCode::Char('k') => {
-                if self.modules_row > 0 {
+            KeyCode::Up | KeyCode::Char('k') if self.modules_row > 0 => {
+                self.modules_row -= 1;
+            }
+            KeyCode::Down | KeyCode::Char('j') if self.modules_row + 1 < total => {
+                self.modules_row += 1;
+            }
+            KeyCode::Enter if self.modules_row == self.settings.modules.len() => {
+                self.prompt = Some(Prompt {
+                    kind: PromptKind::AddModule,
+                    buffer: String::new(),
+                    title: "Add module".to_string(),
+                    hint: "module name (e.g. posh-git)".to_string(),
+                });
+            }
+            KeyCode::Delete | KeyCode::Char('x')
+                if self.modules_row < self.settings.modules.len() =>
+            {
+                let removed = self.settings.modules.remove(self.modules_row);
+                self.show_toast(format!("removed module {removed}"));
+                if self.modules_row >= self.settings.modules.len() && self.modules_row > 0 {
                     self.modules_row -= 1;
-                }
-            }
-            KeyCode::Down | KeyCode::Char('j') => {
-                if self.modules_row + 1 < total {
-                    self.modules_row += 1;
-                }
-            }
-            KeyCode::Enter => {
-                if self.modules_row == self.settings.modules.len() {
-                    self.prompt = Some(Prompt {
-                        kind: PromptKind::AddModule,
-                        buffer: String::new(),
-                        title: "Add module".to_string(),
-                        hint: "module name (e.g. posh-git)".to_string(),
-                    });
-                }
-            }
-            KeyCode::Delete | KeyCode::Char('x') => {
-                if self.modules_row < self.settings.modules.len() {
-                    let removed = self.settings.modules.remove(self.modules_row);
-                    self.show_toast(format!("removed module {removed}"));
-                    if self.modules_row >= self.settings.modules.len() && self.modules_row > 0 {
-                        self.modules_row -= 1;
-                    }
                 }
             }
             _ => {}
@@ -321,25 +313,19 @@ impl ProfileScreen {
         let alias_keys: Vec<String> = self.settings.aliases.keys().cloned().collect();
         let total = alias_keys.len() + 1;
         match key.code {
-            KeyCode::Up | KeyCode::Char('k') => {
-                if self.aliases_row > 0 {
-                    self.aliases_row -= 1;
-                }
+            KeyCode::Up | KeyCode::Char('k') if self.aliases_row > 0 => {
+                self.aliases_row -= 1;
             }
-            KeyCode::Down | KeyCode::Char('j') => {
-                if self.aliases_row + 1 < total {
-                    self.aliases_row += 1;
-                }
+            KeyCode::Down | KeyCode::Char('j') if self.aliases_row + 1 < total => {
+                self.aliases_row += 1;
             }
-            KeyCode::Enter => {
-                if self.aliases_row == alias_keys.len() {
-                    self.prompt = Some(Prompt {
-                        kind: PromptKind::AddAliasName,
-                        buffer: String::new(),
-                        title: "Add alias — name".to_string(),
-                        hint: "alias name (e.g. ll)".to_string(),
-                    });
-                }
+            KeyCode::Enter if self.aliases_row == alias_keys.len() => {
+                self.prompt = Some(Prompt {
+                    kind: PromptKind::AddAliasName,
+                    buffer: String::new(),
+                    title: "Add alias — name".to_string(),
+                    hint: "alias name (e.g. ll)".to_string(),
+                });
             }
             KeyCode::Char('e') => {
                 if let Some(name) = alias_keys.get(self.aliases_row) {

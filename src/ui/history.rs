@@ -191,25 +191,17 @@ impl HistoryScreen {
             }
             KeyCode::Up | KeyCode::Char('k') => self.move_selection(-1),
             KeyCode::Down | KeyCode::Char('j') => self.move_selection(1),
-            KeyCode::Char('d') | KeyCode::Char('D') => {
-                if self.apply_delete() {
-                    self.advance_selection();
-                }
+            KeyCode::Char('d') | KeyCode::Char('D') if self.apply_delete() => {
+                self.advance_selection();
             }
-            KeyCode::Char('r') | KeyCode::Char('R') => {
-                if self.apply_replace() {
-                    self.advance_selection();
-                }
+            KeyCode::Char('r') | KeyCode::Char('R') if self.apply_replace() => {
+                self.advance_selection();
             }
-            KeyCode::Char('K') => {
-                if self.apply_keep() {
-                    self.advance_selection();
-                }
+            KeyCode::Char('K') if self.apply_keep() => {
+                self.advance_selection();
             }
-            KeyCode::Char('c') => {
-                if self.apply_collapse() {
-                    self.advance_selection();
-                }
+            KeyCode::Char('c') if self.apply_collapse() => {
+                self.advance_selection();
             }
             KeyCode::Char('A') => self.bulk_autofix_typos(),
             KeyCode::Char('X') => self.bulk_collapse_all(),
